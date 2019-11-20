@@ -1,12 +1,11 @@
 package com.peter.practiceproject.studyitem.ipc.server;
 
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.os.RemoteException;
 import android.util.Log;
-
-import androidx.annotation.Nullable;
 
 import com.peter.practiceproject.studyitem.ipc.Book;
 
@@ -19,7 +18,7 @@ public class RemoteService extends Service {
 
     private final Stub bookManager = new Stub() {
         @Override
-        public List<Book> getBooks() throws RemoteException {
+        public List<Book> getBooks() {
             synchronized (this) {
                 if (books != null) {
                     return books;
@@ -29,41 +28,30 @@ public class RemoteService extends Service {
         }
 
         @Override
-        public void addBook(Book book) throws RemoteException {
+        public void addBook(Book book) {
             synchronized (this) {
                 if (books == null) {
                     books = new ArrayList<>();
                 }
 
-                if (book == null) {
-                    return;
+                if (book != null) {
+                    books.add(book);
+                    Log.d("Server", "books " + book.toString());
+                }else {
+                    Log.d("Server", "books is null");
                 }
-
-                book.setPrice(book.getPrice() * 2);
-                books.add(book);
-
-                Log.d("Server", "books: " + book.toString());
             }
         }
-    };
 
+    };
 
     public RemoteService() {
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-
-        Book book = new Book();
-        book.setName("Android");
-        book.setPrice(18);
-        books.add(book);
-    }
-
-    @Nullable
-    @Override
     public IBinder onBind(Intent intent) {
         return bookManager;
+        // TODO: Return the communication channel to the service.
+//        throw new UnsupportedOperationException("Not yet implemented");
     }
 }

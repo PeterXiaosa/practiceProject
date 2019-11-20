@@ -3,17 +3,54 @@ package com.peter.practiceproject.studyitem.ipc;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Book implements Parcelable {
+import androidx.annotation.NonNull;
 
-    private int price;
+public class Book implements Parcelable {
+    // 库存量
+    private int count;
+    // 订购量
+    private int buy;
+
     private String name;
 
-    public int getPrice() {
-        return price;
+    private double price;
+
+    public Book() {
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    protected Book(Parcel in) {
+        count = in.readInt();
+        buy = in.readInt();
+        name = in.readString();
+        price = in.readDouble();
+    }
+
+    public static final Creator<Book> CREATOR = new Creator<Book>() {
+        @Override
+        public Book createFromParcel(Parcel in) {
+            return new Book(in);
+        }
+
+        @Override
+        public Book[] newArray(int size) {
+            return new Book[size];
+        }
+    };
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int getBuy() {
+        return buy;
+    }
+
+    public void setBuy(int buy) {
+        this.buy = buy;
     }
 
     public String getName() {
@@ -24,6 +61,14 @@ public class Book implements Parcelable {
         this.name = name;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -31,35 +76,15 @@ public class Book implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.price);
-        dest.writeString(this.name);
+        dest.writeInt(count);
+        dest.writeInt(buy);
+        dest.writeString(name);
+        dest.writeDouble(price);
     }
 
-    public Book() {
-    }
-
-    protected Book(Parcel in) {
-        this.price = in.readInt();
-        this.name = in.readString();
-    }
-
-    public static final Parcelable.Creator<Book> CREATOR = new Creator<Book>() {
-        @Override
-        public Book createFromParcel(Parcel source) {
-            return new Book(source);
-        }
-
-        @Override
-        public Book[] newArray(int size) {
-            return new Book[size];
-        }
-    };
-
+    @NonNull
     @Override
     public String toString() {
-        return "Book{" +
-                "price=" + price +
-                ", name='" + name + '\'' +
-                '}';
+        return "book count : " + count + ", buy : " + buy + ", name : " + name + ", price : " + price ;
     }
 }

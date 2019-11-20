@@ -11,6 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <service
+            android:name=".studyitem.ipc.server.RemoteService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote"></service>
 
         <activity android:name=".studyitem.ipc.client.ClientActivity">
             <intent-filter>
@@ -19,27 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".studyitem.handlerthread.HandleThreadActivity">
-
-        </activity>
-
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".studyitem.handlerthread.HandleThreadActivity"></activity>
+        <activity android:name=".MainActivity" />
 
         <service android:name=".studyitem.handlerthread.MyIntentService" />
-
-        <service
-            android:name=".studyitem.ipc.server.RemoteService"
-            android:enabled="true"
-            android:exported="true"
-            android:process=":remote">
-
-            <intent-filter>
-                <action android:name="com.peter.practiceproject.studyitem.ipc" />
-                <category android:name="android.intent.category.DEFAULT" />
-
-            </intent-filter>
-        </service>
     </application>
 
 </manifest>

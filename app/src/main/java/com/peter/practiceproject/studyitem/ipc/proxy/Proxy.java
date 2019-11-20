@@ -2,70 +2,71 @@ package com.peter.practiceproject.studyitem.ipc.proxy;
 
 import android.os.IBinder;
 import android.os.Parcel;
+import android.os.Parcelable;
 import android.os.RemoteException;
 
 import com.peter.practiceproject.studyitem.ipc.Book;
 import com.peter.practiceproject.studyitem.ipc.server.BookManager;
 import com.peter.practiceproject.studyitem.ipc.server.Stub;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Proxy implements BookManager {
 
-    private static final String DESCRIPTOR = "om.peter.practiceproject.studyitem.ipc.server.BookManager";
-
     private IBinder remote;
 
-    public Proxy(IBinder remote) {
-        this.remote = remote;
-    }
-
-    public String getInterfaceDescriptor() {
-        return DESCRIPTOR;
+    public Proxy(IBinder iBinder) {
+        this.remote = iBinder;
     }
 
     @Override
-    public List<Book> getBooks() throws RemoteException {
+    public List<Book> getBooks() {
         Parcel data = Parcel.obtain();
-        Parcel replay = Parcel.obtain();
-        List<Book> result;
+        Parcel reply = Parcel.obtain();
+        List<Book> result = new ArrayList<>();
 
+        data.writeInterfaceToken(Stub.DESCRIPTOR);
         try {
-            data.writeInterfaceToken(DESCRIPTOR);
-            remote.transact(Stub.TRANSAVTION_getBooks, data, replay, 0);
-            replay.readException();
-            result = replay.createTypedArrayList(Book.CREATOR);
-        } finally {
-            replay.recycle();
+            remote.transact(Stub.addBook_Code, data, reply, 0);
+            reply.readException();
+            reply.readTypedList(result, Book.CREATOR);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }finally {
             data.recycle();
+            reply.recycle();
         }
         return result;
     }
 
     @Override
-    public void addBook(Book book) throws RemoteException {
+    public void addBook(Book book) {
         Parcel data = Parcel.obtain();
-        Parcel replay = Parcel.obtain();
+        Parcel reply = Parcel.obtain();
 
         try {
-            data.writeInterfaceToken(DESCRIPTOR);
+            data.writeInterfaceToken(Stub.DESCRIPTOR);
             if (book != null) {
-                data.writeInt(1);
+//                data.writeInt(1);
                 book.writeToParcel(data, 0);
-            } else {
+            }else {
                 data.writeInt(0);
             }
-            remote.transact(Stub.TRANSAVTION_addBook, data, replay, 0);
-            replay.readException();
-        } finally {
+
+            remote.transact(Stub.addBook_Code, data, reply, 0);
+            reply.readException();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }finally {
             data.recycle();
-            replay.recycle();
+            reply.recycle();
         }
+
     }
 
     @Override
     public IBinder asBinder() {
         return remote;
     }
-
 }

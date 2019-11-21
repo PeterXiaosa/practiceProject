@@ -49,6 +49,18 @@ public class RemoteService extends Service {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+
+        Book book1 = new Book();
+        book1.setPrice(1.234);
+        book1.setName("Tody Book");
+        book1.setCount(2);
+        book1.setBuy(9);
+        books.add(book1);
+    }
+
+    @Override
     public IBinder onBind(Intent intent) {
         return bookManager;
         // TODO: Return the communication channel to the service.

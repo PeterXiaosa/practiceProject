@@ -26,11 +26,11 @@ public class Proxy implements BookManager {
         Parcel reply = Parcel.obtain();
         List<Book> result = new ArrayList<>();
 
-        data.writeInterfaceToken(Stub.DESCRIPTOR);
         try {
-            remote.transact(Stub.addBook_Code, data, reply, 0);
+            data.writeInterfaceToken(Stub.DESCRIPTOR);
+            remote.transact(Stub.getBooksList_Code, data, reply, 0);
             reply.readException();
-            reply.readTypedList(result, Book.CREATOR);
+            result = reply.createTypedArrayList(Book.CREATOR);
         } catch (RemoteException e) {
             e.printStackTrace();
         }finally {
@@ -48,7 +48,8 @@ public class Proxy implements BookManager {
         try {
             data.writeInterfaceToken(Stub.DESCRIPTOR);
             if (book != null) {
-//                data.writeInt(1);
+                // 先写一个int当做标志位，在读取的时候先readint 若大于0则验证成功，继续进行解析。
+                data.writeInt(1);
                 book.writeToParcel(data, 0);
             }else {
                 data.writeInt(0);

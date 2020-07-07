@@ -74,4 +74,36 @@ public class HandleThreadActivity extends AppCompatActivity {
         handlerThread.start();
         handler = new Handler(handlerThread.getLooper());
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Log.d("testActivityLifecycle", " onStart() ");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        Log.d("testActivityLifecycle", " onRestart() ");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("testActivityLifecycle", "HandleThreadActivity onPause() ");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("testActivityLifecycle", "HandleThreadActivity onStop() ");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("testActivityLifecycle", "HandleThreadActivity onDestroy() ");
+    }
 }

@@ -4,6 +4,7 @@
     package="com.peter.practiceproject">
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,18 +15,26 @@
         <service
             android:name=".studyitem.ipc.server.RemoteService"
             android:enabled="true"
-            android:exported="true"
-            android:process=":remote"></service>
+            android:exported="false"
+            android:process=":remote"/>
 
         <activity android:name=".studyitem.ipc.client.ClientActivity">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+
+        <activity android:name=".studyitem.handlerthread.HandleThreadActivity"></activity>
+
+        <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".studyitem.handlerthread.HandleThreadActivity"></activity>
-        <activity android:name=".MainActivity" />
 
         <service android:name=".studyitem.handlerthread.MyIntentService" />
     </application>

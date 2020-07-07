@@ -5,17 +5,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".studyitem.ipc.client.ClientActivity"
+    tools:context=".ClientActivity"
     android:orientation="vertical">
-    <Button
-        android:id="@+id/btn"
-        android:layout_width="wrap_content"
+
+    <EditText
+        android:id="@+id/et_bookname"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="connect"/>
+        android:hint="book name"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/et_bookprice"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:hint="book name"
+        android:inputType="numberDecimal"/>
 
     <Button
-        android:id="@+id/btn_get"
+        android:id="@+id/btn_addBook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get"/>
+        android:text="addBook" />
+
+    <Button
+        android:id="@+id/btn_getBook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="getBooks"/>
 </LinearLayout>

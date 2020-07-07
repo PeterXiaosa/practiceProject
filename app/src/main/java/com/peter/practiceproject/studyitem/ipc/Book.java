@@ -6,21 +6,13 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 public class Book implements Parcelable {
-    // 库存量
-    private int count;
-    // 订购量
-    private int buy;
-
     private String name;
-
     private double price;
 
     public Book() {
     }
 
     protected Book(Parcel in) {
-        count = in.readInt();
-        buy = in.readInt();
         name = in.readString();
         price = in.readDouble();
     }
@@ -36,22 +28,6 @@ public class Book implements Parcelable {
             return new Book[size];
         }
     };
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public int getBuy() {
-        return buy;
-    }
-
-    public void setBuy(int buy) {
-        this.buy = buy;
-    }
 
     public String getName() {
         return name;
@@ -76,15 +52,7 @@ public class Book implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(count);
-        dest.writeInt(buy);
         dest.writeString(name);
         dest.writeDouble(price);
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return "book count : " + count + ", buy : " + buy + ", name : " + name + ", price : " + price ;
     }
 }

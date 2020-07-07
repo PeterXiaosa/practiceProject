@@ -6,8 +6,8 @@ import com.peter.practiceproject.studyitem.ipc.Book;
 
 import java.util.List;
 
-public interface BookManager extends IInterface {
-    List<Book> getBooks();
-
+public interface IBookManager extends IInterface {
     void addBook(Book book);
+
+    List<Book> getBookList();
 }

@@ -5,7 +5,10 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.os.Process;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import com.peter.practiceproject.studyitem.ipc.Book;
 
@@ -14,56 +17,43 @@ import java.util.List;
 
 public class RemoteService extends Service {
 
-    private List<Book> books = new ArrayList<>();
-
-    private final Stub bookManager = new Stub() {
-        @Override
-        public List<Book> getBooks() {
-            synchronized (this) {
-                if (books != null) {
-                    return books;
-                }
-                return new ArrayList<>();
-            }
-        }
-
-        @Override
-        public void addBook(Book book) {
-            synchronized (this) {
-                if (books == null) {
-                    books = new ArrayList<>();
-                }
-
-                if (book != null) {
-                    books.add(book);
-                    Log.d("Server", "books " + book.toString());
-                }else {
-                    Log.d("Server", "books is null");
-                }
-            }
-        }
-
-    };
-
-    public RemoteService() {
-    }
+    private List<Book> mBookList = new ArrayList<>();
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         Book book1 = new Book();
-        book1.setPrice(1.234);
-        book1.setName("Tody Book");
-        book1.setCount(2);
-        book1.setBuy(9);
-        books.add(book1);
+        book1.setName("Java编程思想");
+        book1.setPrice(90.5);
+        Book book2 = new Book();
+        book2.setName("Android开发探索艺术");
+        book2.setPrice(100);
+        mBookList.add(book1);
+        mBookList.add(book2);
+    }
+
+    public RemoteService() {
     }
 
     @Override
     public IBinder onBind(Intent intent) {
         return bookManager;
-        // TODO: Return the communication channel to the service.
-//        throw new UnsupportedOperationException("Not yet implemented");
     }
+
+    private final Stub bookManager = new Stub() {
+        @Override
+        public void addBook(Book book) {
+            if (book != null) {
+                mBookList.add(book);
+                Log.d("BinderIPC", "Server : Pid" + Process.myPid() + ", Uid : " + Process.myUid() + " : add Book : " + book.getName() + ", price : " + book.getPrice());
+            }
+        }
+
+        @Override
+        public List<Book> getBookList() {
+            Log.d("BinderIPC", "Server : Pid" + Process.myPid() + ", Uid : " + Process.myUid() + " : getBookList()");
+            return mBookList;
+        }
+    };
 }
